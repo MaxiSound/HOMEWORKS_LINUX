@@ -1,0 +1,89 @@
+Задание:
+1. Установить Nginx
+2. * настроить Nginx на работу с PHP-FPM.
+3. Установить Apache.
+4. * Настроить обработку PHP. Добиться одновременной работы с Nginx.
+5. Настроить схему обратного прокси для Nginx (динамика - на Apache).
+6. Установить MySQL. Создать новую базу данных и таблицу в ней.
+7. * Установить пакет phpmyadmin и запустить его веб-интерфейс для управления MySQL.
+
+
+1. Установить Nginx
+ubuntu-linux:~$ sudo apt install nginx -y
+
+2. * настроить Nginx на работу с PHP-FPM.
+db@ubuntu-linux:/var/www/html$ sudo apt install php-fpm
+db@ubuntu-linux:/var/www/html$ cd /etc/php/8.1
+db@ubuntu-linux:/etc/php/8.1$ ll
+db@ubuntu-linux:/etc/php/8.1$ cd fpm/pool.d/
+db@ubuntu-linux:/etc/php/8.1/fpm/pool.d$ ll
+db@ubuntu-linux:/etc/php/8.1/fpm/pool.d$ nano www.conf
+db@ubuntu-linux:/etc/php/8.1/fpm/pool.d$ cd /etc/nginx
+db@ubuntu-linux:/etc/nginx$ sudo nano sites-enabled/default
+db@ubuntu-linux:/etc/nginx$ sudo systemctl reload nginx
+
+3. Установить Apache.
+db@ubuntu-linux:~$ sudo apt install apache2 -y
+
+4. * Настроить обработку PHP. Добиться одновременной работы с Nginx.
+db@ubuntu-linux:~$ cd /var/www/html
+db@ubuntu-linux:/var/www/html$ ll
+db@ubuntu-linux:/var/www/html$ sudo su
+root@ubuntu-linux:/var/www/html# nano info.php
+root@ubuntu-linux:/var/www/html# cat info.php
+<?php
+        phpinfo();
+?>
+root@ubuntu-linux:/var/www/html# exit
+
+5. Настроить схему обратного прокси для Nginx (динамика - на Apache).
+db@ubuntu-linux:~$ cd /etc/apache2/
+db@ubuntu-linux:/etc/apache2$ sudo nano ports.conf
+db@ubuntu-linux:/etc/apache2$ sudo cat ports.conf
+# If you just change the port or add more ports here, you will likely also
+# have to change the VirtualHost statement in
+# /etc/apache2/sites-enabled/000-default.conf
+
+Listen 9000
+
+<IfModule ssl_module>
+#       Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+#       Listen 443
+</IfModule>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+
+ubuntu-linux:~$ sudo ss -ntlp
+
+/run/php/php8.1-fpm.sock
+
+6. Установить MySQL. Создать новую базу данных и таблицу в ней.
+db@ubuntu-linux:/etc/nginx$ sudo apt install mysql-server -y
+db@ubuntu-linux:/etc/nginx$ sudo mysql -u root -p
+
+mysql> create database GB_HW_6;
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| GB_HW_6            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+
+mysql> create table students(id INT, nave VARCHAR(100),tel INT);
+mysql> insert into students values (1, 'Ivanov Ivan', 111), (2, 'Sidorov Roman',222), (3, 'Petrov Sergey', 333);
+mysql> select * from students;
++------+---------------+------+
+| id   | nave          | tel  |
++------+---------------+------+
+|    1 | Ivanov Ivan   |  111 |
+|    2 | Sidorov Roman |  222 |
+|    3 | Petrov Sergey |  333 |
++------+---------------+------+
+3 rows in set (0,01 sec)
