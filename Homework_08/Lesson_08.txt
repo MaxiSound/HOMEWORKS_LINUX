@@ -1,0 +1,85 @@
+1. Вывести на экран 3 раза имя пользователя, от которого запускается команда.
+2. Вывести с помощью цикла while все четные числа от 0 до 100 включительно.
+3. Командой 'cut' вывести для текущей папки права доступа файлов (первая колонка вывода команды ‘ll’). 
+Отсортировать этот вывод (команда ‘sort’). Удалить дубликаты (команда ‘uniq’). 
+Использовать для решения конвейер обработки задач (pipeline - вертикальный слэш).
+4.* Написать скрипт очистки директорий. На вход принимает путь к директории. 
+Если директория существует, то удаляет в ней все файлы с расширениями .bak, .tmp, .backup. 
+Если директории нет, то выводит ошибку.
+
+
+1. Вывести на экран 3 раза имя пользователя, от которого запускается команда.
+
+db@ubuntu-linux:~$ nano Task1.sh
+db@ubuntu-linux:~$ chmod u+x *
+db@ubuntu-linux:~$ cat Task1.sh
+#!/bin/bash
+for user in {1..3}
+do
+  echo $(whoami)
+done
+
+db@ubuntu-linux:~$ ./Task1.sh
+db
+db
+db
+
+2. Вывести с помощью цикла while все четные числа от 0 до 100 включительно.
+
+db@ubuntu-linux:~$ nano Task2.sh
+db@ubuntu-linux:~$ chmod u+x *
+db@ubuntu-linux:~$ cat Task2.sh
+#!/bin/bash
+y=0
+while [ $y -lt 101 ]
+do
+        echo $y
+        y=$(( $y +2 ))
+done
+db@ubuntu-linux:~$ ./Task2.sh
+
+3. Командой 'cut' вывести для текущей папки права доступа файлов (первая колонка вывода команды ‘ll’). 
+Отсортировать этот вывод (команда ‘sort’). Удалить дубликаты (команда ‘uniq’). 
+Использовать для решения конвейер обработки задач (pipeline - вертикальный слэш).
+
+db@ubuntu-linux:~$ ls -l | cut -c1-12 | sort |uniq
+drwx------ 5
+drwxrwxrwx 2
+drwxrwxrwx 3
+drwxrwxr-x 2
+-rwxrw-r-- 1
+итого 5
+
+4.* Написать скрипт очистки директорий. На вход принимает путь к директории. 
+Если директория существует, то удаляет в ней все файлы с расширениями .bak, .tmp, .backup. 
+Если директории нет, то выводит ошибку.
+
+db@ubuntu-linux:~$ tree
+.
+├── Geekbrains
+│   ├── f1.txt
+│   ├── f2.bak
+│   ├── f3.tmp
+│   └── f4.backup
+
+db@ubuntu-linux:~$ nano Task4.sh
+db@ubuntu-linux:~$ chmod u+x *
+db@ubuntu-linux:~$ cat Task4.sh
+#!/bin/bash
+dir=$1
+if [ -e $dir ];then
+  find $dir -type f \( -name "*.bak"  -o  -name "*.tmp" -o -name "*.backup" \) -delete
+        echo "Все временные файлы и резервные копии удалены!"
+else
+  echo "Error"
+fi
+
+db@ubuntu-linux:~$ ./Task4.sh
+Все временные файлы и резервные копии удалены!
+db@gb-linux:~$ tree
+.
+├── Geekbrains
+│   └── f1.txt
+
+db@ubuntu-linux:~$ db@ubuntu-linux:~$ ./Task4.sh home/ttttt
+Error.Нет такой директории
