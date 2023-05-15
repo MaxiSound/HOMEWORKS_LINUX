@@ -1,0 +1,70 @@
+1. Подключить репозиторий с nginx любым удобным способом, установить nginx и потом удалить nginx, используя утилиту dpkg.
+2. Установить пакет на свой выбор, используя snap.
+3. Создать с помощью nano файл test.txt. Настроить автоматический бэкап этого файла раз в 10 минут в файл с названием test.txt.bak с использованием cron.
+
+ubuntu-linux:~$ apt list nginx
+Вывод списка… Готово
+nginx/jammy-updates,jammy-security 1.18.0-6ubuntu14.3 amd64
+N: Есть 1 дополнительная версия. Используйте «-a» для просмотра.
+
+ubuntu-linux:~$ sudo apt install nginx
+
+
+ubuntu-linux:~$ cd /etc/nginx
+ubuntu-linux:/etc/nginx$ ll
+итого 80
+drwxr-xr-x   8 root root  4096 апр  8 13:59 ./
+drwxr-xr-x 130 root root 12288 апр  6 17:18 ../
+drwxr-xr-x   2 root root  4096 ноя 10 09:39 conf.d/
+-rw-r--r--   1 root root  1125 июл 27  2022 fastcgi.conf
+-rw-r--r--   1 root root  1055 июл 27  2022 fastcgi_params
+-rw-r--r--   1 root root  2837 июл 27  2022 koi-utf
+-rw-r--r--   1 root root  2223 июл 27  2022 koi-win
+-rw-r--r--   1 root root  3957 авг  2  2022 mime.types
+drwxr-xr-x   2 root root  4096 ноя 10 09:39 modules-available/
+drwxr-xr-x   2 root root  4096 апр  8 13:59 modules-enabled/
+-rw-r--r--   1 root root  1447 июл 27  2022 nginx.conf
+-rw-r--r--   1 root root   180 июл 27  2022 proxy_params
+-rw-r--r--   1 root root   636 июл 27  2022 scgi_params
+drwxr-xr-x   2 root root  4096 апр  8 13:59 sites-available/
+drwxr-xr-x   2 root root  4096 апр  6 17:18 sites-enabled/
+drwxr-xr-x   2 root root  4096 апр  8 13:59 snippets/
+-rw-r--r--   1 root root   664 июл 27  2022 uwsgi_params
+-rw-r--r--   1 root root  3071 июл 27  2022 win-utf
+ubuntu-linux:/etc/nginx$
+
+
+ubuntu-linux:~$ sudo dpkg -r nginx
+[sudo] пароль для db:
+(Чтение базы данных … на данный момент установлено 187429 файлов и каталогов.)
+Удаляется nginx (1.18.0-6ubuntu14.3) …
+
+
+ubuntu-linux:~$ snap list
+Название                   Версия            Правка  Канал            Издатель    Примечание
+bare                       1.0               5       latest/stable    canonical✓  base
+core18                     20230320          2721    latest/stable    canonical✓  base
+core20                     20230308          1852    latest/stable    canonical✓  base
+core22                     20230325          607     latest/stable    canonical✓  base
+firefox                    111.0.1-2         2487    latest/stable/…  mozilla✓    -
+gnome-3-38-2004            0+git.6f39565     137     latest/stable/…  canonical✓  -
+gnome-42-2204              0+git.e7d97c7     68      latest/stable    canonical✓  -
+gtk-common-themes          0.1-81-g442e511   1535    latest/stable/…  canonical✓  -
+snap-store                 41.3-66-gfe1e325  638     latest/stable/…  canonical✓  -
+snapd                      2.58.3            18596   latest/stable    canonical✓  snapd
+snapd-desktop-integration  0.1               57      latest/stable/…  canonical✓  -
+
+ubuntu-linux:~$ sudo snap install google-docs
+google-docs 2022.12.1 от Tech Fiddle (comp-labs) установлен
+
+ubuntu-linux:~/shared$ nano test.txt
+ubuntu-linux:~/shared$ crontab -e
+ubuntu-linux:~/shared$ crontab -l
+
+ubuntu-linux:~/shared$ ll
+итого 48
+drwxrwxr-x  2 db db  4096 апр  9 00:36 ./
+drwxrwxrwx 16 db db  4096 апр 10 22:35 ../
+-rw-rw-r--  1 db db 28512 апр 12 21:12 logs.txt
+-rw-rw-r--  1 db db  1941 апр  8 23:54 test.txt
+-rw-rw-r--  1 db db   114 апр 12 21:14 test.txt.bak
